@@ -36,8 +36,12 @@ class Channel:
         if self.maxIntensity is not None:
             d['maxIntensity']=self.maxIntensity
         d['mipmapLevels'] = self.ip.to_ordered_dict()
+<<<<<<< HEAD
         return d
     
+=======
+
+>>>>>>> added first version of channel support
     def from_dict(self,d):
         ''' method for deserializing this class from a json compatible dictionary
 
