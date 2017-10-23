@@ -36,6 +36,7 @@ test_pool_size = os.environ.get('RENDER_PYTHON_TEST_POOL_SIZE',3)
 
 multi_channel_dir = os.path.join(example_dir,'multichannel-test')
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 test_2_channels_d = render_json_template(example_env,
     'test_2_channels.json',
@@ -45,5 +46,10 @@ test_2_channels_json = os.path.join(test_files_dir,'test_2_channels.json')
 test_2_channels_d = render_json_template(example_env,
     test_2_channels_json,
 >>>>>>> added first version of channel support
+=======
+
+test_2_channels_d = render_json_template(example_env,
+    'test_2_channels.json',
+>>>>>>> initial channel implementation
     multi_channel_example_dir=multi_channel_dir)
 
