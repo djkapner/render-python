@@ -19,7 +19,6 @@ client_script_location = os.environ.get('RENDER_CLIENT_SCRIPTS',
                           ('/var/www/render/render-ws-java-client/'
                           'src/main/scripts/'))
 
-<<<<<<< HEAD
 render_params = {
     'host':render_host,
     'port':render_port,
@@ -28,28 +27,13 @@ render_params = {
     'client_scripts':client_script_location
 }
 
-=======
->>>>>>> added first version of channel support
 tilespec_file = os.path.join(example_dir,'example_1','cycle1_step1_acquire_tiles.json')
 tform_file = os.path.join(example_dir,'example_1','cycle1_step1_acquire_transforms.json')
 test_pool_size = os.environ.get('RENDER_PYTHON_TEST_POOL_SIZE',3)
 
 multi_channel_dir = os.path.join(example_dir,'multichannel-test')
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 test_2_channels_d = render_json_template(example_env,
     'test_2_channels.json',
-=======
-test_2_channels_json = os.path.join(test_files_dir,'test_2_channels.json')
-
-test_2_channels_d = render_json_template(example_env,
-    test_2_channels_json,
->>>>>>> added first version of channel support
-=======
-
-test_2_channels_d = render_json_template(example_env,
-    'test_2_channels.json',
->>>>>>> initial channel implementation
     multi_channel_example_dir=multi_channel_dir)
 
