@@ -13,7 +13,6 @@ d = {
         }
     }
 }
-
 def test_channel():
     mml = renderapi.image_pyramid.MipMapLevel(0,
                                               imageUrl='file:///not/a/path',
