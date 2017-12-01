@@ -8,10 +8,12 @@ from functools import partial
 import logging
 import subprocess
 import tempfile
+import requests
 from .errors import ClientScriptError
-from .utils import NullHandler, renderdump_temp
-from .render import RenderClient, renderaccess
+from .utils import NullHandler, renderdump_temp, post_json
+from .render import RenderClient, renderaccess, format_preamble
 from .stack import set_stack_state, make_stack_params
+from .resolvedtiles import ResolvedTiles
 from pathos.multiprocessing import ProcessingPool as Pool
 
 # setup logger
@@ -240,7 +242,8 @@ def import_jsonfiles_validate_client(stack, jsonfiles,
 def import_tilespecs(stack, tilespecs, sharedTransforms=None,
                      subprocess_mode=None, host=None, port=None,
                      owner=None, project=None, client_script=None,
-                     memGB=None, render=None, **kwargs):
+                     memGB=None, render=None, session = requests.session(),
+                      **kwargs):
     """method to import tilesepcs directly from
     :class:`renderapi.tilespec.TileSpec` objects
 
@@ -256,6 +259,12 @@ def import_tilespecs(stack, tilespecs, sharedTransforms=None,
         render connect object
 
     """
+    # rts = ResolvedTiles(tilespecs=tilespecs,transformList=sharedTransforms)
+
+    # request_url = format_preamble(host, port, owner, project, stack) + "/resolvedTiles"
+
+    # post_json(session, request_url, rts)
+
     tsjson = renderdump_temp(tilespecs)
 
     if sharedTransforms is not None:

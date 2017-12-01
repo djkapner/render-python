@@ -87,7 +87,7 @@ def post_json(session, request_url, d, params=None):
 
     headers = {"content-type": "application/json"}
     if d is not None:
-        payload = json.dumps(d)
+        payload = renderdumps(d)
     else:
         payload = None
         headers['Accept'] = "application/json"
