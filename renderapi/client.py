@@ -350,7 +350,7 @@ def import_tilespecs(stack, tilespecs, sharedTransforms=None,
 
 
 @renderclientaccess
-def import_tilespecs_parallel(stack, tilespecs, sharedTransforms=None,                          
+def import_tilespecs_parallel(stack, tilespecs, sharedTransforms=None,
                               subprocess_mode=None, poolsize=20,
                               mpPool=WithPool,
                               close_stack=True, host=None, port=None,
@@ -1127,6 +1127,23 @@ def pointMatchClient(stack, collection, tile_pairs,
                   canvas_url_template.format(tile2)]
 
     call_run_ws_client('org.janelia.render.client.PointMatchClient',
+                       memGB=memGB, client_script=client_script,
+                       subprocess_mode=subprocess_mode, add_args=argvs,
+                       **kwargs)
+
+
+def ransacClient(candidateFile, outputDirectory, match_options=None,
+                 subprocess_mode=None, client_script=None,
+                 memGB=None, render=None, **kwargs):
+    """run RansacFilterClient.java
+    """  # TODO documentation
+    match_options = (MatchDerivationParameters(**kwargs)
+                     if match_options is None else match_options)
+    argvs = match_options.to_java_args() + [
+        '--candidateFile', candidateFile,
+        '--outputDirectory', outputDirectory]
+
+    call_run_ws_client('org.janelia.render.client.RansacFilterClient',
                        memGB=memGB, client_script=client_script,
                        subprocess_mode=subprocess_mode, add_args=argvs,
                        **kwargs)
