@@ -1132,6 +1132,7 @@ def pointMatchClient(stack, collection, tile_pairs,
                        **kwargs)
 
 
+@renderclientaccess
 def ransacClient(candidateFile, outputDirectory, match_options=None,
                  subprocess_mode=None, client_script=None,
                  memGB=None, render=None, **kwargs):
