@@ -3,7 +3,7 @@ import logging
 from time import strftime
 import requests
 from .errors import RenderError
-from .utils import jbool, NullHandler, post_json, put_json,rest_delete
+from .utils import jbool, NullHandler, post_json, put_json, rest_delete
 from .render import (format_baseurl, format_preamble,
                      renderaccess)
 from .utils import get_json
@@ -153,8 +153,7 @@ def get_full_stack_metadata(stack, host=None, port=None, owner=None,
     request_url = format_preamble(host, port, owner, project, stack)
 
     logger.debug(request_url)
-    return get_json(session,request_url)
-
+    return get_json(session, request_url)
 
 
 def get_stack_metadata(*args, **kwargs):
@@ -315,7 +314,7 @@ def delete_stack(stack, host=None, port=None, owner=None,
 
     """
     request_url = format_preamble(host, port, owner, project, stack)
-    r = rest_delete(session,request_url)
+    r = rest_delete(session, request_url)
     logger.debug(r.text)
     return r
 
@@ -346,7 +345,7 @@ def delete_section(stack, z, host=None, port=None, owner=None,
     """
     request_url = '{}/z/{}'.format(
         format_preamble(host, port, owner, project, stack), z)
-    r = rest_delete(session,request_url)
+    r = rest_delete(session, request_url)
     logger.debug(r.text)
     return r
 
@@ -379,7 +378,7 @@ def delete_tile(stack, tileId, host=None, port=None, owner=None,
     """
     request_url = '{}/tile/{}'.format(
         format_preamble(host, port, owner, project, stack), tileId)
-    r = rest_delete(session,request_url)
+    r = rest_delete(session, request_url)
     logger.debug(r.text)
     return r
 
@@ -444,6 +443,44 @@ def create_stack(stack, cycleNumber=None, cycleStepNumber=None,
         logger.error(e)
         logger.error(r.text)
         raise RenderError(r.text)
+
+
+@renderaccess
+def rename_stack(stack, to_stack, to_project=None, to_owner=None,
+                 host=None, port=None, owner=None, project=None,
+                 session=requests.session(), render=None, **kwargs):
+    """
+     :func:`renderapi.render.renderaccess` decorated function
+
+    Parameters
+    ----------
+    inputstack : str
+        name of input stack to clone
+    to_stack : str
+        name of destination stack. if exists, must be LOADING
+    to_project : str
+        name of project to rename stack to (default = leave the same as inputstack)
+    outputOwner: str
+        name of owner to rename stack to (default = leave the same as inputstack)
+    render : renderapi.render.Render
+        render connect object
+    session : requests.sessions.Session
+        session object (default start a new one)
+
+    Returns
+    -------
+    requests.session.response
+        server response
+    """  # noqa: E501
+
+    request_url = format_preamble(
+        host, port, owner, project, stack) + "/stackId"
+    d = {
+        "owner": owner if to_owner is None else to_owner,
+        "project": project if to_project is None else to_project,
+        "stack": stack if to_stack is None else to_stack
+    }
+    return put_json(session, request_url, d)
 
 
 @renderaccess
@@ -531,8 +568,7 @@ def get_z_values_for_stack(stack, project=None, host=None, port=None,
     request_url = format_preamble(
         host, port, owner, project, stack) + "/zValues/"
     logger.debug(request_url)
-    return get_json(session,request_url)
-
+    return get_json(session, request_url)
 
 
 def get_z_value_for_section(stack, sectionId, **kwargs):
@@ -586,7 +622,7 @@ def get_bounds_from_z(stack, z, host=None, port=None, owner=None,
     request_url = format_preamble(
         host, port, owner, project, stack) + '/z/%f/bounds' % (z)
 
-    return get_json(session,request_url)
+    return get_json(session, request_url)
 
 
 @renderaccess
@@ -617,8 +653,7 @@ def get_stack_bounds(stack, host=None, port=None, owner=None, project=None,
     """
     request_url = format_preamble(
         host, port, owner, project, stack) + '/bounds'
-    return get_json(session,request_url)
-
+    return get_json(session, request_url)
 
 
 @renderaccess
@@ -696,7 +731,7 @@ def get_stack_sectionData(stack, host=None, port=None, owner=None,
     """
     request_url = format_preamble(
         host, port, owner, project, stack) + '/sectionData'
-    return get_json(session,request_url)
+    return get_json(session, request_url)
 
 
 @renderaccess
@@ -729,8 +764,7 @@ def get_section_z_value(stack, sectionId, host=None, port=None,
     """
     request_url = format_preamble(
         host, port, owner, project, stack) + "/section/%s/z" % sectionId
-    return get_json(session,request_url)
-
+    return get_json(session, request_url)
 
 
 @renderaccess
