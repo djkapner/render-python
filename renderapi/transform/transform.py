@@ -1,6 +1,7 @@
 import json
 from renderapi.errors import RenderError
 from renderapi.transform.leaf import load_leaf_json
+import numpy as np
 __all__ = [
         'TransformList',
         'ReferenceTransform',
@@ -154,6 +155,35 @@ class InterpolatedTransform:
                      ('a', self.a.to_dict()),
                      ('b', self.b.to_dict()),
                      ('lambda', self.lambda_)])
+
+    def tform(self, points, sharedTransforms=[]):
+        """transform a set of points through this transformation
+        Parameters
+        ----------
+        points : numpy.array
+            a Nx2 array of x,y points
+        Returns
+        -------
+        numpy.array
+            a Nx2 array of x,y points after transformation
+        """
+        dst = []
+
+        refids = np.array([r.transformId for r in sharedTransforms])
+
+        for ab in [self.a, self.b]:
+            dst.append(np.copy(points))
+            for tf in ab.tforms:
+                if isinstance(tf, ReferenceTransform):
+                    rind = np.argwhere(refids == tf.refId).flatten()
+                    if rind.size != 1:
+                        raise RenderError("Could not fine unique "
+                                          "sharedTransform for refId %s" %
+                                          tf.refId)
+                    tf = sharedTransforms[rind[0]]
+                dst[-1] = tf.tform(dst[-1])
+
+        return (1.0 - self.lambda_) * dst[0] + self.lambda_ * dst[1]
 
 
 class ReferenceTransform:
