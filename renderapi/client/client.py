@@ -382,7 +382,7 @@ def materialize_tilespec_image(
     y = _defaultval(y, tilespec.minY)
     width = _defaultval(width, int(float((tilespec.maxX - tilespec.minX))))
     height = _defaultval(height, int(float((tilespec.maxY - tilespec.minY))))
-    renderClient(tile_spec_url=tspecfile, out_fn=out_fn,
+    rendererClient(tile_spec_url=tspecfile, out_fn=out_fn,
                  height=height, width=width, x=x, y=y, res=res,
                  subprocess_mode=subprocess_mode,
                  client_script=client_script, memGB=memGB, **kwargs)
